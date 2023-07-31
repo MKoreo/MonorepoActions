@@ -5,11 +5,10 @@ This includes detection of changes to the monorepo packages, which are defined a
 # Usage
 Use the github action by calling the external repo github action: "mkoreo/pnpm-filter@v1"
 Define input parameters:
-- appName: The app or service name (foldername) to be checked for changes to its source code.
 - PAT: The PAT for your github repository, to checkout the source code and pull request.
 
 Use output parameter:
-- changed: "True" if source has changed.
+- changedProjects: List of projectfolder names that have changed.
 
 Example usage in workflow:
 ```
