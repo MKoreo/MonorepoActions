@@ -14,14 +14,14 @@ Use output parameter:
 Example usage in workflow:
 ```
     steps:
+    steps:
     - id: pnpm-filter
       uses: mkoreo/pnpm-filter@v1
       with:
-        appName: auth-service
         PAT: ${{secrets.PAT}}
 
     - name: Build
-    if: ${{steps.pnpm-filter.outputs.changed}} == 'True'
+    if: contains( steps.pnpm-filter.outputs.changedProjects , 'auth-service')
     uses: docker/build-push-action@v4
     with:
       file: ./projects/backend/auth-service/Dockerfile
