@@ -25,6 +25,8 @@ runs:
     shell: bash
     run: |
       changedPaths=$(pnpm --filter ...[${{ github.event.pull_request.base.sha }}] exec pwd)
-      changedProjects=$( sed 's|.*/||' <<< $changedPaths )
+      if [[ $changedPaths =~ ^No.* ]]; then changedProjects=""; else 
+        changedProjects=$( sed 's|.*/||' <<< $changedPaths )
+      fi
       printf 'Detected changed project: %s\n' $changedProjects
       echo changedProjects=$changedProjects >> "$GITHUB_OUTPUT"
