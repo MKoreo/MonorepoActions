@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
 name: 'pnpm-filter'
 description: 'Github Action for PNPM monorepo to determine changed packages according to GIT changes.'
 branding:
@@ -21,7 +22,7 @@ runs:
   - 
     uses: actions/checkout@v3
     with:
-      fetch-depth: 2
+      fetch-depth: 0
       token: ${{ inputs.PAT }}
   - 
     id: pnpm-filter
