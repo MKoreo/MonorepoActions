@@ -1,32 +1,35 @@
 name: 'pnpm-filter'
-description: 'Github Action to determine if app source code has changed in a pnpm monorepo.'
+description: 'Github Action for PNPM monorepo to determine changed packages according to GIT changes.'
 branding:
   icon: 'filter'
   color: 'green'
 inputs:
   PAT:
-    description: "Repository PAT to authenticate checkout"
+    description: "Repository personal access token (PAT) to authenticate checkout action"
     required: true
 outputs:
-  changedProjects:
-    description: "Changed Projects"
-    value: ${{ steps.pnpm-filter.outputs.changedProjects }}
+  changedPackages:
+    description: "Changed packages"
+    value: ${{ steps.pnpm-filter.outputs.changedPackages }}
 runs:
   using: "composite"
   steps:
-  - uses: pnpm/action-setup@v2
+  - 
+    uses: pnpm/action-setup@v2
     with:
       version: 8
-  - uses: actions/checkout@v3
+  - 
+    uses: actions/checkout@v3
     with:
       fetch-depth: 2
       token: ${{ inputs.PAT }}
-  - id: pnpm-filter
+  - 
+    id: pnpm-filter
     shell: bash
     run: |
       changedPaths=$(pnpm --filter ...[${{ github.event.pull_request.base.sha }}] exec pwd)
-      if [[ $changedPaths =~ ^No.* ]]; then changedProjects=""; else 
-        changedProjects=$( sed 's|.*/||' <<< $changedPaths )
+      if [[ $changedPaths =~ ^No.* ]]; then changedPackages=""; else 
+        changedPackages=$( sed 's|.*/||' <<< $changedPaths )
       fi
-      printf 'Detected changed project: %s\n' $changedProjects
-      echo changedProjects=$changedProjects >> "$GITHUB_OUTPUT"
+      printf 'Detected changed project: %s\n' $changedPackages
+      echo changedPackages=$changedPackages >> "$GITHUB_OUTPUT"
